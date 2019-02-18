@@ -1,0 +1,30 @@
+data = xlsread('lancer1.xls')
+data3 = data(1:12821,:);
+
+fs = 0.0033333333
+slen = length(data3);
+
+t = 1/fs; %time sample
+time = 10*t*data3;
+%dup = 0:t:5-t;
+ 
+nfft2 = 2^nextpow2(slen); %length of a signal in the power of 2
+subplot(2,1,1)
+
+plot(data3);
+title('Trajectory of the Fuel Information')
+xlabel('data points')
+ylabel('Fuel Level')
+ff_1 = fft(data1,nfft2);
+ff = fft(data3);
+
+p2 = abs(ff/slen);
+p1 = p2(1:slen/2+1);
+p1(2:end-1) = 2*p1(2:end-1);
+f = fs*(0:(slen/2))/slen;
+subplot(2,1,2)
+plot(f,p1);
+title('Single - sided Amplitude Spectrum of Fuel Information');
+xlabel('f (Hz)');
+ylabel('absolute value of Amplitude');
+
