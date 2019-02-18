@@ -1,0 +1,45 @@
+data = load('onlyADC.csv');
+
+data1 =data(1:262144,:);
+%data2 = resample(data,262144);
+data3 = data(1:32768,:);
+%data_day = data (1:);
+
+
+fs = 10; %sampling Frequency
+
+slen = length(data3);
+slen1 = length(data1);
+
+
+t = 1/fs; %time sample
+time = 10*t*data1;
+%dup = 0:t:5-t;
+ 
+nfft2 = 2^nextpow2(slen); %length of a signal in the power of 2
+subplot(2,1,1)
+
+plot(data3);
+title('Trajectory of the ADC value')
+xlabel('data points')
+ylabel('ADC values')
+ff_1 = fft(data1,nfft2);
+ff = fft(data3);
+
+p2 = abs(ff/slen);
+p1 = p2(1:slen/2+1);
+p1(2:end-1) = 2*p1(2:end-1);
+f = fs*(0:(slen/2))/slen;
+subplot(2,1,2)
+plot(f,p1);
+title('Single - sided Amplitude Spectrum of ADC');
+xlabel('f (Hz)');
+ylabel('absolute value of Amplitude');
+
+%subplot(2,1,2)
+%plot(ff);
+
+
+%data1 = interp1(data,t,dup);
+
+%plot(dup,data1,'rs-',t,data,'bo');
